@@ -1,0 +1,434 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "API 文档标题",
+        "description": "接口的详细描述",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/login": {
+            "post": {
+                "summary": "用户登录",
+                "description": "用户通过学号登录，登录成功后返回个人信息,包括学号和座位(实际上没什么用)",
+                "operationId": "login_login_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginReq"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LoginResp"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/getQuestion": {
+            "get": {
+                "summary": "获取题目信息",
+                "description": "通过 URL 查询参数传递 questionID 和 stdID 获取题目的信息，不包含答案,用于用户获取作答题目",
+                "operationId": "getQuestion_getQuestion_get",
+                "parameters": [
+                    {
+                        "name": "questionID",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Questionid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetQuestionResp"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/getFinishQuestion": {
+            "get": {
+                "summary": "获取题目完成情况",
+                "description": "通过 URL 查询参数传递 questionID 和 stdID 获取包含答案和用户完成情况的题目信息,用于查看用户已经完成的题目",
+                "operationId": "getFinishQuestion_getFinishQuestion_get",
+                "parameters": [
+                    {
+                        "name": "questionID",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Questionid"
+                        }
+                    },
+                    {
+                        "name": "stdID",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Stdid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetFinishQuestionResp"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/uploadAnswer": {
+            "post": {
+                "summary": "提交答案",
+                "description": "用户提交答案后返回题目信息和作答状态",
+                "operationId": "uploadAnswer_uploadAnswer_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UploadAnswerReq"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UploadAnswerResp"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "GetFinishQuestionResp": {
+                "properties": {
+                    "questionID": {
+                        "type": "integer",
+                        "title": "Questionid"
+                    },
+                    "content": {
+                        "type": "string",
+                        "title": "Content"
+                    },
+                    "options": {
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "type": "object",
+                        "title": "Options"
+                    },
+                    "answer": {
+                        "type": "string",
+                        "title": "Answer"
+                    },
+                    "stdID": {
+                        "type": "string",
+                        "title": "Stdid"
+                    },
+                    "status": {
+                        "type": "boolean",
+                        "title": "Status"
+                    },
+                    "useTime": {
+                        "type": "string",
+                        "title": "Usetime"
+                    },
+                    "userAnswer": {
+                        "type": "string",
+                        "title": "Useranswer"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "questionID",
+                    "content",
+                    "options",
+                    "answer",
+                    "stdID",
+                    "status",
+                    "useTime",
+                    "userAnswer"
+                ],
+                "title": "GetFinishQuestionResp"
+            },
+            "GetQuestionResp": {
+                "properties": {
+                    "questionID": {
+                        "type": "integer",
+                        "title": "Questionid"
+                    },
+                    "content": {
+                        "type": "string",
+                        "title": "Content"
+                    },
+                    "options": {
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "type": "object",
+                        "title": "Options"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "questionID",
+                    "content",
+                    "options"
+                ],
+                "title": "GetQuestionResp"
+            },
+            "HTTPValidationError": {
+                "properties": {
+                    "detail": {
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        },
+                        "type": "array",
+                        "title": "Detail"
+                    }
+                },
+                "type": "object",
+                "title": "HTTPValidationError"
+            },
+            "LoginReq": {
+                "properties": {
+                    "stdID": {
+                        "type": "string",
+                        "title": "Stdid"
+                    },
+                    "place": {
+                        "type": "string",
+                        "title": "Place"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "stdID",
+                    "place"
+                ],
+                "title": "LoginReq"
+            },
+            "LoginResp": {
+                "properties": {
+                    "stdID": {
+                        "type": "string",
+                        "title": "Stdid"
+                    },
+                    "place": {
+                        "type": "string",
+                        "title": "Place"
+                    },
+                    "tempQuestionNum": {
+                        "type": "integer",
+                        "title": "Tempquestionnum"
+                    },
+                    "totalQuestionNum": {
+                        "type": "integer",
+                        "title": "Totalquestionnum"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "stdID",
+                    "place",
+                    "tempQuestionNum",
+                    "totalQuestionNum"
+                ],
+                "title": "LoginResp"
+            },
+            "UploadAnswerReq": {
+                "properties": {
+                    "questionID": {
+                        "type": "integer",
+                        "title": "Questionid"
+                    },
+                    "stdID": {
+                        "type": "string",
+                        "title": "Stdid"
+                    },
+                    "start": {
+                        "type": "string",
+                        "title": "Start"
+                    },
+                    "end": {
+                        "type": "string",
+                        "title": "End"
+                    },
+                    "userAnswer": {
+                        "type": "string",
+                        "title": "Useranswer"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "questionID",
+                    "stdID",
+                    "start",
+                    "end",
+                    "userAnswer"
+                ],
+                "title": "UploadAnswerReq"
+            },
+            "UploadAnswerResp": {
+                "properties": {
+                    "questionID": {
+                        "type": "integer",
+                        "title": "Questionid"
+                    },
+                    "content": {
+                        "type": "string",
+                        "title": "Content"
+                    },
+                    "options": {
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "type": "object",
+                        "title": "Options"
+                    },
+                    "answer": {
+                        "type": "string",
+                        "title": "Answer"
+                    },
+                    "stdID": {
+                        "type": "string",
+                        "title": "Stdid"
+                    },
+                    "status": {
+                        "type": "boolean",
+                        "title": "Status"
+                    },
+                    "useTime": {
+                        "type": "string",
+                        "title": "Usetime"
+                    },
+                    "userAnswer": {
+                        "type": "string",
+                        "title": "Useranswer"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "questionID",
+                    "content",
+                    "options",
+                    "answer",
+                    "stdID",
+                    "status",
+                    "useTime",
+                    "userAnswer"
+                ],
+                "title": "UploadAnswerResp"
+            },
+            "ValidationError": {
+                "properties": {
+                    "loc": {
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "integer"
+                                }
+                            ]
+                        },
+                        "type": "array",
+                        "title": "Location"
+                    },
+                    "msg": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "type": {
+                        "type": "string",
+                        "title": "Error Type"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "loc",
+                    "msg",
+                    "type"
+                ],
+                "title": "ValidationError"
+            }
+        }
+    }
+}
