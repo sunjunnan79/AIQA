@@ -9,6 +9,7 @@ class LoginResp(BaseModel):
     place: str  # 作为
     tempQuestionNum: int  # 当前的问题序号
     totalQuestionNum: int  # 总问题数量
+    countRight:int
 
 
 # 通过questionID和stdID获取题目的信息(如果没作答过的话)

@@ -301,6 +301,10 @@
                     "totalQuestionNum": {
                         "type": "integer",
                         "title": "Totalquestionnum"
+                    },
+                    "countRight": {
+                        "type": "integer",
+                        "title": "Countright"
                     }
                 },
                 "type": "object",
@@ -308,7 +312,8 @@
                     "stdID",
                     "place",
                     "tempQuestionNum",
-                    "totalQuestionNum"
+                    "totalQuestionNum",
+                    "countRight"
                 ],
                 "title": "LoginResp"
             },

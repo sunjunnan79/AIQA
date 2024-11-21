@@ -103,7 +103,7 @@ class AnswerDAO(BaseDAO):
         ans = self.session.query(Answer).filter_by(stdID=stdID, questionID=questionID).first()
         return ans
 
-    def first_or_create(self, stdID: str, questionID: str, status: bool, start: str, end: str, answer: str) -> Answer:
+    def first_or_create(self, stdID: str, questionID: int, status: bool, start: str, end: str, answer: str) -> Answer:
         # 将字符串转换为 datetime 对象
         def parse_datetime(value: str) -> datetime:
             try:
@@ -135,6 +135,9 @@ class AnswerDAO(BaseDAO):
             return answer.questionID
         else:
             return 0
+
+    def countRight(self, stdID: str) -> int:
+        return self.session.query(Answer).filter_by(status=True,stdID=stdID).count()
 
     def calculate_time_spent_str(self, answer_id: int) -> Optional[str]:
 

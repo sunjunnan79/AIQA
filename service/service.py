@@ -19,9 +19,9 @@ class Service:
 
         # 题目总数
         totalQuestionNum = self.questionDAO.get_total()
-
+        countRight = self.answerDAO.countRight(req.stdID)
         return response.LoginResp(stdID=user.stdID, place=user.place, tempQuestionNum=tempQuestionNum,
-                                  totalQuestionNum=totalQuestionNum)
+                                  totalQuestionNum=totalQuestionNum,countRight=countRight)
 
     def getFinishQuestion(self, req: request.GetFinishQuestionReq) -> response.GetFinishQuestionResp:
         question = self.questionDAO.find_question(question_id=req.questionID)
