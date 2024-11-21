@@ -57,10 +57,17 @@ class Service:
         )
 
     def getQuestion(self, req: request.GetQuestionReq) -> response.GetQuestionResp:
+        # 题目总数
+        totalQuestionNum = self.questionDAO.get_total()
+        tempQuestionNum = self.answerDAO.find_latest(req.stdID)
+        countRight = self.answerDAO.countRight(req.stdID)
         question = self.questionDAO.find_question(question_id=req.questionID)
 
         return response.GetQuestionResp(
             # 问题表
+            tempQuestionNum=tempQuestionNum,
+            totalQuestionNum=totalQuestionNum,
+            countRight=countRight,
             questionID=question.id,
             content=question.content,
             options=json.loads(question.options),

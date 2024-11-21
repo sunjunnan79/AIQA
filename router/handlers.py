@@ -32,6 +32,7 @@ async def login(req: request.LoginReq, service: service.Service = Depends(get_se
 )
 async def getQuestion(
         questionID: int,
+        stdID: str,
         service: service.Service = Depends(get_service)
 ):
     """
@@ -39,11 +40,11 @@ async def getQuestion(
 
     Args:
         questionID (int): 问题的唯一标识符。
-
+        stdID (str): 学号
     Returns:
         GetQuestionResp: 包括问题的 ID、内容和答案（可能为空）。
     """
-    req = request.GetQuestionReq(questionID=questionID)
+    req = request.GetQuestionReq(questionID=questionID, stdID=stdID)
     return service.getQuestion(req)
 
 

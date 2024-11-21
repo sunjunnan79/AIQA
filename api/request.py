@@ -10,6 +10,7 @@ class LoginReq(BaseModel):
 # 通过questionID和stdID获取题目的信息,只有题目没有答案
 class GetQuestionReq(BaseModel):
     questionID: int
+    stdID: str
 
 
 # 通过questionID和stdID获取题目的信息,有答案和题目的作答情况信息
@@ -25,4 +26,3 @@ class UploadAnswerReq(BaseModel):
     start: str
     end: str
     userAnswer: str
-

@@ -17,6 +17,9 @@ class GetQuestionResp(BaseModel):
     questionID: int
     content: str
     options: Dict[str, str]
+    tempQuestionNum :int
+    totalQuestionNum :int
+    countRight :int
 
 
 class GetFinishQuestionResp(BaseModel):

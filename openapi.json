@@ -59,6 +59,15 @@
                             "type": "integer",
                             "title": "Questionid"
                         }
+                    },
+                    {
+                        "name": "stdID",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Stdid"
+                        }
                     }
                 ],
                 "responses": {
@@ -243,13 +252,28 @@
                         },
                         "type": "object",
                         "title": "Options"
+                    },
+                    "tempQuestionNum": {
+                        "type": "integer",
+                        "title": "Tempquestionnum"
+                    },
+                    "totalQuestionNum": {
+                        "type": "integer",
+                        "title": "Totalquestionnum"
+                    },
+                    "countRight": {
+                        "type": "integer",
+                        "title": "Countright"
                     }
                 },
                 "type": "object",
                 "required": [
                     "questionID",
                     "content",
-                    "options"
+                    "options",
+                    "tempQuestionNum",
+                    "totalQuestionNum",
+                    "countRight"
                 ],
                 "title": "GetQuestionResp"
             },
