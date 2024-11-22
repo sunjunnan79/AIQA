@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 
 from pydantic import BaseModel
 
@@ -9,40 +9,40 @@ class LoginResp(BaseModel):
     place: str  # 作为
     tempQuestionNum: int  # 当前的问题序号
     totalQuestionNum: int  # 总问题数量
-    countRight:int
+    countRight: int
 
 
 # 通过questionID和stdID获取题目的信息(如果没作答过的话)
 class GetQuestionResp(BaseModel):
     questionID: int
     content: str
-    options: Dict[str, str]
-    tempQuestionNum :int
-    totalQuestionNum :int
-    countRight :int
+    options: List[str]
+    tempQuestionNum: int
+    totalQuestionNum: int
+    countRight: int
 
 
 class GetFinishQuestionResp(BaseModel):
     # 问题表
     questionID: int
     content: str
-    options: Dict[str, str]
+    options: List[str]
     answer: str
     # 用户作答表
     stdID: str
     status: bool
     useTime: str
-    userAnswer : str
+    userAnswer: str
 
 
 class UploadAnswerResp(BaseModel):
     # 问题表
     questionID: int
     content: str
-    options: Dict[str, str]
-    answer:str
+    options: List[str]
+    answer: str
     # 用户作答表
     stdID: str
     status: bool
     useTime: str
-    userAnswer : str
+    userAnswer: str

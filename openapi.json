@@ -196,10 +196,10 @@
                         "title": "Content"
                     },
                     "options": {
-                        "additionalProperties": {
+                        "items": {
                             "type": "string"
                         },
-                        "type": "object",
+                        "type": "array",
                         "title": "Options"
                     },
                     "answer": {
@@ -247,10 +247,10 @@
                         "title": "Content"
                     },
                     "options": {
-                        "additionalProperties": {
+                        "items": {
                             "type": "string"
                         },
-                        "type": "object",
+                        "type": "array",
                         "title": "Options"
                     },
                     "tempQuestionNum": {
@@ -385,10 +385,10 @@
                         "title": "Content"
                     },
                     "options": {
-                        "additionalProperties": {
+                        "items": {
                             "type": "string"
                         },
-                        "type": "object",
+                        "type": "array",
                         "title": "Options"
                     },
                     "answer": {

@@ -1,5 +1,7 @@
 import json
 
+from fastapi import HTTPException
+
 from model import models
 from api import request, response
 
@@ -14,6 +16,9 @@ class Service:
     def login(self, req: request.LoginReq) -> response.LoginResp:
         # 用户个人信息
         user = self.userDAO.first_or_create(req.stdID, req.place)
+        if user.place != req.place:
+            raise HTTPException(status_code=401, detail="Unauthorized: Place mismatch")
+
         # 当前答题情况
         tempQuestionNum = self.answerDAO.find_latest(req.stdID)
 
@@ -21,7 +26,7 @@ class Service:
         totalQuestionNum = self.questionDAO.get_total()
         countRight = self.answerDAO.countRight(req.stdID)
         return response.LoginResp(stdID=user.stdID, place=user.place, tempQuestionNum=tempQuestionNum,
-                                  totalQuestionNum=totalQuestionNum,countRight=countRight)
+                                  totalQuestionNum=totalQuestionNum, countRight=countRight)
 
     def getFinishQuestion(self, req: request.GetFinishQuestionReq) -> response.GetFinishQuestionResp:
         question = self.questionDAO.find_question(question_id=req.questionID)

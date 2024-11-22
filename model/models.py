@@ -14,9 +14,12 @@ engine = create_engine(DATABASE_URL, echo=True)
 Base = declarative_base()
 # 创建 Session
 SessionLocal = sessionmaker(bind=engine)
+
+
 def InitDB():
     # 创建所有表
     Base.metadata.create_all(engine)
+
 
 # DAO 基类,这倒是很新奇的做法,没玩过,没有gorm包装的那么好,不是很方便但是封装自由度还是很高的
 class BaseDAO:
@@ -33,12 +36,14 @@ class BaseDAO:
         self.session.delete(obj)
         self.session.commit()
 
+
 # 用户表
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, autoincrement=True)
     stdID = Column(String, unique=True, nullable=False)
     place = Column(String, nullable=False)
+
 
 # 用户 DAO
 class UserDAO(BaseDAO):
@@ -58,18 +63,19 @@ class Question(Base):
     options = Column(Text, nullable=False)  # JSON 字符串
     answer = Column(String, nullable=False)
 
+
 # 问题 DAO
 class QuestionDAO(BaseDAO):
     def save_question(self, content: str, options: dict, answer: str) -> Optional[Question]:
         content = content.strip()
-        op=json.dumps(options)
+        op = json.dumps(options)
         """
         保存问题，增加去重功能：如果相同 content 的问题已存在，则不重复存储。
         """
         # 检查是否存在重复的问题
         existing_question = (
             self.session.query(Question)
-            .filter_by(content=content,options=op)
+            .filter_by(content=content, options=op)
             .first()
         )
 
@@ -86,6 +92,7 @@ class QuestionDAO(BaseDAO):
     def get_total(self) -> int:
         return self.session.query(Question).count()
 
+
 # 答案表
 class Answer(Base):
     __tablename__ = "answers"
@@ -96,6 +103,7 @@ class Answer(Base):
     start = Column(DateTime, nullable=False)  # 修改为 DateTime 类型
     end = Column(DateTime, nullable=False)  # 修改为 DateTime 类型
     answer = Column(String, nullable=False)
+
 
 # 答案 DAO
 class AnswerDAO(BaseDAO):
@@ -131,13 +139,13 @@ class AnswerDAO(BaseDAO):
     def find_latest(self, stdID: str) -> int:
 
         answer = self.session.query(Answer).filter_by(stdID=stdID).order_by(Answer.id.desc()).first()
-        if answer !=None:
+        if answer != None:
             return answer.questionID
         else:
             return 0
 
     def countRight(self, stdID: str) -> int:
-        return self.session.query(Answer).filter_by(status=True,stdID=stdID).count()
+        return self.session.query(Answer).filter_by(status=True, stdID=stdID).count()
 
     def calculate_time_spent_str(self, answer_id: int) -> Optional[str]:
 
